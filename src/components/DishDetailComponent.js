@@ -5,6 +5,7 @@ import { Control, Errors, LocalForm } from 'react-redux-form';
 import { Button, Col, Label, Modal, ModalBody, ModalHeader, Row } from 'reactstrap';
 import { Loading } from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
+import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
@@ -14,13 +15,17 @@ const minLength = (len) => (val) => (val) && (val.length >= len);
         if (dish !== null) {
             return (
                 <div>
-                    <Card>
-                        <CardImg width="100%" src={baseUrl + dish.image} alt={dish.name} />
-                        <CardBody>
-                            <CardTitle>{dish.name}</CardTitle>
-                            <CardText>{dish.description}</CardText>
-                        </CardBody>
-                    </Card>
+                    <FadeTransform in transformProps={{
+                        exitTransform: 'scale(0.5) translateY(-50%)'
+                    }}>
+                        <Card>
+                            <CardImg width="100%" src={baseUrl + dish.image} alt={dish.name} />
+                            <CardBody>
+                                <CardTitle>{dish.name}</CardTitle>
+                                <CardText>{dish.description}</CardText>
+                            </CardBody>
+                        </Card>
+                    </FadeTransform>
                 </div>
             );
         }
@@ -36,22 +41,26 @@ const minLength = (len) => (val) => (val) && (val.length >= len);
         else {
             const commentList = comments.map((comment) => {
                 return (
-                    <div key={comment.id}>
-                        <li>{comment.comment}</li>
-                        <li>-- {comment.author}, {new Intl.DateTimeFormat('en-US', {
-                            year: 'numeric',
-                            month: 'short',
-                            day: '2-digit'
-                        }).format(new Date(Date.parse(comment.date)))}</li>
-                        <br />
-                    </div>
+                    <Fade in>
+                        <div key={comment.id}>
+                            <li>{comment.comment}</li>
+                            <li>-- {comment.author}, {new Intl.DateTimeFormat('en-US', {
+                                year: 'numeric',
+                                month: 'short',
+                                day: '2-digit'
+                            }).format(new Date(Date.parse(comment.date)))}</li>
+                            <br />
+                        </div>
+                    </Fade>
                 );
             });
             return (
                 <div>
                     <h4>Comments</h4>
                     <ul class="list-unstyled">
-                        {commentList}
+                        <Stagger in>
+                            {commentList}
+                        </Stagger>
                     </ul>
                     <CommentForm dishId={dishId} postComment={postComment} />
                 </div>
