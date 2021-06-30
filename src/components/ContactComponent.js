@@ -19,7 +19,7 @@ class Contact extends React.Component {
 
     handleSubmit(values) {
         console.log("Current state is ", JSON.stringify(values));
-        alert("Current state is " + JSON.stringify(values));
+        this.props.postFeedback(values.firstName, values.lastName, values.telNum, values.email, values.agree, values.contactType, values.message);
         this.props.resetFeedbackForm();
     }
 

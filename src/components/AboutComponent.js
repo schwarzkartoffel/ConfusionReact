@@ -2,10 +2,11 @@ import React from 'react';
 import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Loading } from './LoadingComponent';
+import { Fade, Stagger } from 'react-animation-components';
 
 function RenderLeader({leader}) {
     return (
-        <Media key={leader.id} className="mt-5">
+        <Media className="mt-5">
             <Media left middle>
                 <Media object src="/assets/images/alberto.png" alt="Alberto" />
             </Media>
@@ -20,11 +21,11 @@ function RenderLeader({leader}) {
 
 function About(props) {
 
-    const leaders = props.leaders.leaders.map((leader) => {
+    const leaders = <Stagger in>{props.leaders.leaders.map((leader) => {
         return (
-            <RenderLeader leader={leader} />
+            <Fade in><RenderLeader key={leader.id} leader={leader} /></Fade>
         );
-    });
+    })}</Stagger>;
 
     return(
         <div className="container">
@@ -84,7 +85,7 @@ function About(props) {
                     {props.leaders.isLoading ? <Loading /> : props.leaders.errMess ? 
                     <h4>{props.leaders.errMess}</h4> : 
                     <Media list>
-                            {leaders}
+                        {leaders}
                     </Media> }
                 </div>
             </div>
